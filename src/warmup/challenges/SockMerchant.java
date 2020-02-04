@@ -1,13 +1,7 @@
 package warmup.challenges;
 
 import java.io.*;
-import java.math.*;
-import java.security.*;
-import java.text.*;
 import java.util.*;
-import java.util.Map.Entry;
-import java.util.concurrent.*;
-import java.util.regex.*;
 
 //https://www.hackerrank.com/challenges/sock-merchant/problem?h_l=interview&playlist_slugs%5B%5D=interview-preparation-kit&playlist_slugs%5B%5D=warmup
 
@@ -15,17 +9,28 @@ public class SockMerchant {
 
     // Complete the sockMerchant function below.
     static int sockMerchant(int n, int[] ar) {
-        Set<ArrayList<Integer>> set = new HashSet<ArrayList<Integer>>();
+    	ArrayList<Integer>[] arrayList = new ArrayList[101];
         int result = 0;
-        int[]array = new int[ar.length];
-        
+	    
+        for (int i = 0; i < ar.length; i++) {
+			int arElement= ar[i];
+			if(arrayList[arElement] == null) {
+				arrayList[arElement] = new ArrayList<Integer>();
+			}
+			arrayList[arElement].add(arElement);
+		}
+       	for (int i = 0; i < arrayList.length; i++) {
+       		if(arrayList[i] != null) {
+       			result += arrayList[i].size()/2;
+       		}
+       		
+		}
         return result;
     }
 
     private static final Scanner scanner = new Scanner(System.in);
 
     public static void main(String[] args) throws IOException {
-        BufferedWriter bufferedWriter = new BufferedWriter(new PrintWriter(System.out));
 
         int n = scanner.nextInt();
         scanner.skip("(\r\n|[\n\r\u2028\u2029\u0085])?");
@@ -41,12 +46,7 @@ public class SockMerchant {
         }
 
         int result = sockMerchant(n, ar);
-
-        bufferedWriter.write(String.valueOf(result));
-        bufferedWriter.newLine();
-
-        bufferedWriter.close();
-
+        System.out.println(result);
         scanner.close();
     }
 }
