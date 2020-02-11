@@ -6,56 +6,51 @@ public class NewYearChaos {
 
 	private static Scanner scanner = new Scanner(System.in);
 	// Complete the minimumBribes function below.
-	private static final int maxBribes = 2;
 
 	static void minimumBribes(int[] q) {
 		int result = 0;
-		int initialNumberInQueue = 0;
-
-		for (int index = 0; index < q.length; index++) {
-			initialNumberInQueue++;
-			int actualNumber = q[index];
-
-			int resultSubtraction = actualNumber - initialNumberInQueue;
-			if (resultSubtraction == 0) {
-				continue;
-			}
-			if (resultSubtraction > 2 || resultSubtraction < -2) {
+		int expectedNumber = 0;
+		int actualNumber  = 0;
+		int temp = 0;
+		for (int index = q.length-1; index >=0 ; index--) {
+			actualNumber = q[index];
+			expectedNumber = index +1;
+			int subtraction = actualNumber - expectedNumber;
+			if(subtraction> 2) {
 				System.out.println("Too chaotic");
-				break;
-			} else {
-				result += Math.abs(resultSubtraction);
-				swapElements(q, actualNumber, index, resultSubtraction);
+				return;
 			}
+			else {
+				if(subtraction == 2) {
+					temp = q[index];
+					result += subtraction;
+					for(int i = index ; i< index +3; i ++) {
+						if(i == index +2) {
+							q[i] = temp;
+						}else {
+							int tempIndex = i+1;
+							q[i] = q[tempIndex];
+						}
+						
+					}
+					index++;
+					
+				}
+				if(subtraction == 1) {
+					result += subtraction;
+					temp = q[index];
+					int nextIndex = index +1 ;
+					q[index]  = q[nextIndex];
+					q[nextIndex] = temp;
+					index++;
+				}
+				
+			}
+	
 		}
 		System.out.println(result);
-
-	}
-
-	/*
-	 * 1 2 5 3 4 7 8 6 -1 2 3 4 5 6 7 8
-	 */
-
-	private static void swapElements(int[] q, int actualNumber, int indexActualNumber, int resultSubtraction) {
-		if (resultSubtraction == 1 || resultSubtraction == -1) {
-			q[indexActualNumber] = q[++indexActualNumber];
-			q[indexActualNumber] = actualNumber;
-		} else {
-			if (indexActualNumber == q.length - 1) {
-
-				int indexMoved = indexActualNumber + resultSubtraction;
-				int temp = q[indexMoved];
-				q[indexMoved] = actualNumber;
-				q[indexActualNumber] = temp;
-			}else{
-				for (int i = 0; i < maxBribes; i++) {
-					q[indexActualNumber] = q[++indexActualNumber];
-				}
-				q[indexActualNumber] = actualNumber;	
-			}
-			
-		}
-
+		return;
+		
 	}
 
 	public static void main(String[] args) {
@@ -76,7 +71,8 @@ public class NewYearChaos {
 				q[i] = qItem;
 			}
 
-			minimumBribes(q);
+			 minimumBribes(q);
+			
 		}
 
 		scanner.close();
