@@ -1,27 +1,32 @@
 package com.hackerrank.algorithms.strings;
 
-import java.lang.reflect.Field;
-import java.util.Scanner;
+import java.io.BufferedInputStream;
+import java.io.IOException;
 
 
-//https://www.hackerrank.com/challenges/sherlock-and-valid-string/problem?utm_campaign=challenge-recommendation&utm_medium=email&utm_source=24-hour-campaign
-
+//https://www.hackerrank.com/challenges/sherlock-and-valid-string/problem
+	
 public class SherlockValidString {
-    private static final Scanner scanner = new Scanner(System.in); 
+    private static final BufferedInputStream stream = new BufferedInputStream(System.in);
+    
+	public static void main(String[] args) throws IOException {
+		int[] characterFrequency = new int[26];
+		int ch;
+		char c;
+		while ((ch = stream.read()) != -1) {
+			c = (char) ch;
+			countCharacterFrequencies(c, characterFrequency);
+		}
 
-	public static void main(String[] args) {
-		String s = scanner.nextLine();
-		String result = isValid(s);
-		System.out.println(result);
-		scanner.close();
+		stream.close();
+
+		String result = isValid(characterFrequency);
+	//	System.out.println(result);
+		
 	}
     
  // Complete the isValid function below.
-    static String isValid(String s) {     	
-    	char[] alphabet = "abcdefghijklmnopqrstuvwxyz".toCharArray();
-    	int[] characterFrequency = new int[alphabet.length];
-		countCharacterFrequencies(s, characterFrequency);
-
+    static String isValid(int[] characterFrequency) {
 		//index represents character frequency and value represents frequency for character frequency 
 		int[] frequenciesCount = new int[characterFrequency.length];
 		int smallestFrequency =Integer.MAX_VALUE;
@@ -73,24 +78,8 @@ public class SherlockValidString {
 		return "NO";
     }
 
-	private static void countCharacterFrequencies(String s, int[] characterFrequency) {
-		try {
-			// using reflection to get the inner char array of the string(performs faster
-			// for large strings)
-			final Field field = String.class.getDeclaredField("value");
-			field.setAccessible(true);
-			final char[] chars = (char[]) field.get(s);
-			final int len = chars.length;
-			for (int i = 0; i < len; i++) {
-				if (chars[i] <= ' ') {
-					throw new RuntimeException("Bzzzt -- Illegal Character!!");
-				}
-				characterFrequency[chars[i] - 'a']++;
-			}
-
-		} catch (Exception ex) {
-			throw new RuntimeException(ex);
-		}
+	private static void countCharacterFrequencies(char c, int[] characterFrequency) {
+		characterFrequency[c - 'a']++;
 	}
  
 }
